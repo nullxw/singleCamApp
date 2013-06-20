@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class CustomCameraViewController;
+
 @interface ViewController : UIViewController
+
+@property (nonatomic, strong) CustomCameraViewController *customCameraViewController;
+
+- (IBAction)openCustomCamera:(id)sender;
 
 @end
