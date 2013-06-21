@@ -36,35 +36,17 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    NSLog(@"screenRect: %f %f %f %f",
-          screenRect.origin.x,
-          screenRect.origin.y,
-          screenRect.size.width,
-          screenRect.size.height
-          );
-    
-    NSLog(@"self: %f %f %f %f",
-          self.view.frame.origin.x,
-          self.view.frame.origin.y,
-          self.view.frame.size.width,
-          self.view.frame.size.height
-          );
-    
-    // Set As FullScreen
-    [self.view setFrame: screenRect];
-    
-    NSLog(@"self: %f %f %f %f",
-          self.view.frame.origin.x,
-          self.view.frame.origin.y,
-          self.view.frame.size.width,
-          self.view.frame.size.height
-          );
-    
+        
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Show" style:UIBarButtonItemStylePlain target:self action:@selector(cancelView:)];
     self.navigationItem.rightBarButtonItem = anotherButton;
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    //imageSource = nil;
+    //[imagePicture setImage:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -93,20 +75,25 @@
 
 -(IBAction)cancelView:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    // Launch notificaion center
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CLOSE_CAMERA_AND_PREVIEW" object:nil userInfo:nil];
 }
 
 -(IBAction)retakePicture:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    // Launch notificaion center
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RETAKE_PICTURE" object:nil userInfo:nil];
 }
 
 #pragma mark - UIAlertDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    // Hide current view after clicked any button
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    // Launch notificaion center
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CLOSE_CAMERA_AND_PREVIEW" object:nil userInfo:nil];
 }
 
 @end

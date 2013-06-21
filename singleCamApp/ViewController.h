@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class CustomCameraViewController;
+@class CustomCameraViewController, PreviewPictureViewController;
 
 @interface ViewController : UIViewController
 
 @property (nonatomic, strong) CustomCameraViewController *customCameraViewController;
+@property (nonatomic, strong) PreviewPictureViewController *previewPictureViewController;
 
 - (IBAction)openCustomCamera:(id)sender;
 

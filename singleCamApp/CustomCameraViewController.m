@@ -7,7 +7,6 @@
 //
 
 #import "CustomCameraViewController.h"
-#import "PreviewPictureViewController.h"
 
 @interface CustomCameraViewController ()
 
@@ -17,7 +16,6 @@
 
 @synthesize pickerController;
 @synthesize btnHideCamera = _btnHideCamera;
-@synthesize previewPictureViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,12 +31,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
-    if(previewPictureViewController == nil){
-        previewPictureViewController = [storyboard instantiateViewControllerWithIdentifier:@"PreviewPictureViewController"];
-    }
-    [previewPictureViewController setImagePicture:nil ];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -53,16 +45,35 @@
     // Dispose of any resources that can be recreated.
 }
 
--(IBAction)closeCameraView:(id)sender
+- (IBAction)closeCameraView:(id)sender
 {
     [pickerController dismissViewControllerAnimated:YES completion:nil];
 }
 
--(IBAction)takePicture:(id)sender
+- (IBAction)takePicture:(id)sender
 {
     [pickerController takePicture];
-    
-} 
+}
+
+- (IBAction)configureFlash:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Flash"
+                                                    message:@"Configure your own flash type (Auto/Off/On)!"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+- (IBAction)configureCameraDevice:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Camera device"
+                                                    message:@"Configure your own camera device (Rear/Front)"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
 
 #pragma mark - When finish shoot
 
@@ -71,13 +82,10 @@
     // Get image from camera
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
-    // But before here, we need to show other VC to See image and select what's next.
-    [previewPictureViewController setImageSource:image];
+    NSDictionary *infoToObject = [NSDictionary dictionaryWithObjectsAndKeys:image, @"uiimage", nil];
     
-    // Show PreviewPictureController
-    [self presentViewController:previewPictureViewController animated:YES completion:^(void){
-        
-    }];
+    // Launch notificaion center
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SHOW_PREVIEW_PICTURE" object:nil userInfo:infoToObject];
     
 }
 
